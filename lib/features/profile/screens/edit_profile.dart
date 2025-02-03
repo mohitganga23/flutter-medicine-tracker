@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../core/utils/navigation_helper.dart';
-import '../../data/services/profile_service.dart';
+import '../../../core/utils/navigation_helper.dart';
+import '../services/profile_service.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final Map<String, dynamic> userProfile;

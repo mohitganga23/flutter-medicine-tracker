@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/navigation_helper.dart';
-import '../../data/services/profile_service.dart';
+import '../services/profile_service.dart';
 import 'edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {

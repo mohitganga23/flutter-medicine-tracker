@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/utils/navigation_helper.dart';
-import '../../../../auth/data/services/auth_service.dart';
-import '../../../../auth/presentation/screens/login.dart';
-import '../../../../profile/presentation/screens/profile.dart';
+import '../../../../core/utils/navigation_helper.dart';
+import '../../../auth/screens/login.dart';
+import '../../../auth/services/auth_service.dart';
+import '../../../profile/screens/profile.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});

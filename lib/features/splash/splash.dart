@@ -10,9 +10,9 @@ import '../../core/constants/text_styles.dart';
 import '../../core/utils/navigation_helper.dart';
 import '../../core/utils/secure_storage/secure_storage_keys.dart';
 import '../../core/utils/secure_storage/secure_storage_util.dart';
-import '../auth/presentation/screens/login.dart';
-import '../dashboard/presentation/dashboard/dashboard.dart';
-import '../onboarding/onboarding.dart';
+import '../auth/screens/login.dart';
+import '../dashboard/screens/dashboard.dart';
+import '../onboarding/screens/onboarding.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

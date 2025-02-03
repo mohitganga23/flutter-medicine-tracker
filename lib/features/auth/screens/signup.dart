@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/utils/navigation_helper.dart';
-import '../../../../core/utils/validators.dart';
-import '../../data/providers/sign_up_provider.dart';
+import '../../../core/utils/navigation_helper.dart';
+import '../../../core/utils/validators.dart';
+import '../providers/sign_up_provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});

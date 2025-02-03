@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +6,9 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'core/constants/theme.dart';
-import 'features/auth/data/providers/login_provider.dart';
-import 'features/auth/data/providers/sign_up_provider.dart';
-import 'features/medication/data/providers/medication_provider.dart';
+import 'features/auth/providers/login_provider.dart';
+import 'features/auth/providers/sign_up_provider.dart';
+import 'features/medication/providers/medication_provider.dart';
 import 'features/splash/splash.dart';
 import 'firebase_options.dart';
 

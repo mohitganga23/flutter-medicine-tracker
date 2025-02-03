@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../core/utils/navigation_helper.dart';
+import '../../../core/utils/navigation_helper.dart';
 import 'medication_details.dart';
 
 class MedicationCard extends StatelessWidget {

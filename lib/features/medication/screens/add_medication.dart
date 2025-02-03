@@ -3,7 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/providers/medication_provider.dart';
+import '../providers/medication_provider.dart';
 
 class AddMedicationForm extends StatefulWidget {
   const AddMedicationForm({super.key});

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_medicine_tracker/features/medication/data/providers/medication_provider.dart';
+import 'package:flutter_medicine_tracker/features/medication/providers/medication_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/utils/local_notification_service/local_notification_service.dart';
-import '../../../../core/utils/navigation_helper.dart';
-import '../../../../core/utils/ui_helper.dart';
+import '../../../core/utils/local_notification_service/local_notification_service.dart';
+import '../../../core/utils/navigation_helper.dart';
+import '../../../core/utils/ui_helper.dart';
 import '../models/medication_model.dart';
 
 class MedicationService {

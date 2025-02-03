@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/navigation_helper.dart';
-import '../../../../core/utils/ui_helper.dart';
-import '../../presentation/screens/login.dart';
+import '../../../core/utils/navigation_helper.dart';
+import '../../../core/utils/ui_helper.dart';
+import '../screens/login.dart';
 import '../services/auth_service.dart';
 
 class SignUpProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
 
   final _formKey = GlobalKey<FormState>();
+
   get formKey => _formKey;
 
   final emailController = TextEditingController();

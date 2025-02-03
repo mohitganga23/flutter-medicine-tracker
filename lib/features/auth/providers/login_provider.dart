@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/navigation_helper.dart';
-import '../../../../core/utils/ui_helper.dart';
-import '../../../dashboard/presentation/dashboard/dashboard.dart';
+import '../../../core/utils/navigation_helper.dart';
+import '../../../core/utils/ui_helper.dart';
+import '../../dashboard/screens/dashboard.dart';
 import '../services/auth_service.dart';
 
 class LoginProvider with ChangeNotifier {

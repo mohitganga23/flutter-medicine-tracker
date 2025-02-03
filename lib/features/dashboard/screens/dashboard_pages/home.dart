@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../core/utils/local_notification_service/local_notification_service.dart';
-import '../../../../../core/utils/navigation_helper.dart';
-import '../../../../medication/presentation/screens/add_medication.dart';
-import '../widgets/medication_card.dart';
+import '../../../../core/utils/local_notification_service/local_notification_service.dart';
+import '../../../../core/utils/navigation_helper.dart';
+import '../../../medication/screens/add_medication.dart';
+import '../../widgets/medication_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

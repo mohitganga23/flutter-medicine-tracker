@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/utils/navigation_helper.dart';
-import '../../../../core/utils/validators.dart';
-import '../../data/providers/login_provider.dart';
+import '../../../core/utils/navigation_helper.dart';
+import '../../../core/utils/validators.dart';
+import '../providers/login_provider.dart';
 import 'forgot_password.dart';
 import 'signup.dart';
 
