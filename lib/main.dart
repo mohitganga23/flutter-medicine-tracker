@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_medicine_tracker/features/dashboard/providers/home_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider(create: (context) => LoginProvider()),
             ChangeNotifierProvider(create: (context) => SignUpProvider()),
+            ChangeNotifierProvider(create: (context) => HomeProvider()),
             ChangeNotifierProvider(create: (context) => MedicationProvider()),
           ],
           child: MaterialApp(

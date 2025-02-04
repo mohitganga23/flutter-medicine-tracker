@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/navigation_helper.dart';
-import 'medication_details.dart';
+import '../screens/dashboard_pages/home/medication_details.dart';
 
 class MedicationCard extends StatelessWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>> document;

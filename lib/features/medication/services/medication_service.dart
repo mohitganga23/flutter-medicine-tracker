@@ -14,14 +14,14 @@ class MedicationService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> addAndScheduleMedication(
-    BuildContext context,
+    BuildContext ctx,
     String selectedMember,
     String medicationName,
     String attachNote,
     List<TimeOfDay> dosageTiming,
   ) async {
     MedicationProvider medicationProvider = Provider.of<MedicationProvider>(
-      context,
+      ctx,
       listen: false,
     );
 
@@ -34,7 +34,7 @@ class MedicationService {
       List<Dosage> dosages = [];
 
       for (var time in dosageTiming) {
-        final String formattedTime = time.format(context);
+        final String formattedTime = time.format(ctx);
 
         // Generate a unique notification ID for each dosage
         int notificationId = DateTime.now().millisecondsSinceEpoch.remainder(
@@ -74,9 +74,9 @@ class MedicationService {
           .collection('user_medications')
           .add(medication.toMap());
 
-      if (!context.mounted) return;
+      if (!ctx.mounted) return;
       showCustomSnackBar(
-        context,
+        ctx,
         'Medication added successfully!',
         Colors.green,
       );
@@ -85,11 +85,11 @@ class MedicationService {
 
       await Future.delayed(const Duration(seconds: 2));
 
-      if (!context.mounted) return;
-      NavigationHelper.pop(context);
+      if (!ctx.mounted) return;
+      NavigationHelper.pop(ctx);
     } catch (e) {
       showCustomSnackBar(
-        context,
+        ctx,
         'Failed to add medication...',
         Colors.red,
       );

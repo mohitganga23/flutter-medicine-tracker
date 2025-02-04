@@ -159,6 +159,10 @@ class LocalNotificationService {
       );
     }
   }
+
+  Future<List<PendingNotificationRequest>> getPendingNotificationRequest() {
+    return _localNotifications.pendingNotificationRequests();
+  }
 }
 
 @pragma('vm:entry-point')

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'dashboard_pages/account.dart';
-import 'dashboard_pages/home.dart';
+import 'dashboard_pages/account/account.dart';
+import 'dashboard_pages/home/home.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
