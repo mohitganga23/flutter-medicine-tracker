@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/navigation_helper.dart';
+import '../../../core/constants/routes.dart';
 import '../services/profile_service.dart';
-import 'edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -31,9 +31,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               var userData = await _profileService.getUserProfile();
 
               if (!context.mounted) return;
-              await NavigationHelper.push(
+              await NavigationHelper.pushNamed(
                 context,
-                EditProfileScreen(userProfile: userData!.data()!),
+                AppRoutes.editProfile,
+                arguments: userData!.data()!,
               );
 
               setState(() {});

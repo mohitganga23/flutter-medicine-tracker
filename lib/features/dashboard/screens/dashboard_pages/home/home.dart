@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_medicine_tracker/features/dashboard/providers/home_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/constants/routes.dart';
 import '../../../../../core/utils/navigation_helper.dart';
-import '../../../../medication/screens/add_medication.dart';
+import '../../../providers/home_provider.dart';
 import '../../../widgets/medication_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
             label: const Text("Add Medication"),
             icon: const Icon(Icons.add_outlined, size: 24),
             onPressed: () {
-              NavigationHelper.push(context, const AddMedicationForm());
+              NavigationHelper.pushNamed(context, AppRoutes.addMedication);
             },
           ),
           body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

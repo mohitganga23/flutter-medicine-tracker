@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/routes.dart';
 import '../../../core/utils/navigation_helper.dart';
 import '../../../core/utils/ui_helper.dart';
-import '../screens/login.dart';
 import '../services/auth_service.dart';
 
 class SignUpProvider with ChangeNotifier {
@@ -67,9 +67,10 @@ class SignUpProvider with ChangeNotifier {
           durationInSeconds: 5,
         );
 
-        NavigationHelper.pushReplacement(
+        NavigationHelper.pushAndRemoveUntilNamed(
           ctx,
-          LoginScreen(),
+          AppRoutes.login,
+          (route) => false,
         );
       } else {
         _errorMessage = result;

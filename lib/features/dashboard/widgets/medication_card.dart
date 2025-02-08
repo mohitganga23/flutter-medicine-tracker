@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/routes.dart';
 import '../../../core/utils/navigation_helper.dart';
-import '../screens/dashboard_pages/home/medication_details.dart';
 
 class MedicationCard extends StatelessWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>> document;
@@ -24,9 +24,10 @@ class MedicationCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       child: GestureDetector(
         onTap: () {
-          NavigationHelper.push(
+          NavigationHelper.pushNamed(
             context,
-            MedicationDetailScreen(document: document),
+            AppRoutes.medicationDetails,
+            arguments: document,
           );
         },
         child: Card(

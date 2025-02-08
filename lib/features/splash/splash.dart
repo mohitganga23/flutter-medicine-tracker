@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../core/constants/routes.dart';
 import '../../core/constants/strings.dart';
 import '../../core/constants/text_styles.dart';
 import '../../core/utils/navigation_helper.dart';
 import '../../core/utils/secure_storage/secure_storage_keys.dart';
 import '../../core/utils/secure_storage/secure_storage_util.dart';
-import '../auth/screens/login.dart';
-import '../dashboard/screens/dashboard.dart';
-import '../onboarding/screens/onboarding.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -42,20 +40,20 @@ class _SplashScreenState extends State<SplashScreen> {
     // If onboarding is not done, redirect to OnboardingScreen
     if (hasOnboardingDone == null || hasOnboardingDone != "true") {
       if (!mounted) return;
-      NavigationHelper.pushReplacement(context, const OnboardingScreen());
+      NavigationHelper.pushReplacementNamed(context, AppRoutes.onBoarding);
       return;
     }
 
     // If the user is signed in, redirect to DashboardScreen
     if (user != null) {
       if (!mounted) return;
-      NavigationHelper.pushReplacement(context, const DashboardScreen());
+      NavigationHelper.pushReplacementNamed(context, AppRoutes.dashboard);
       return;
     }
 
     // If the user is not signed in and has completed onboarding, redirect to LoginScreen
     if (!mounted) return;
-    NavigationHelper.pushReplacement(context, LoginScreen());
+    NavigationHelper.pushReplacementNamed(context, AppRoutes.login);
   }
 
   @override

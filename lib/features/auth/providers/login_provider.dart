@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/routes.dart';
 import '../../../core/utils/navigation_helper.dart';
 import '../../../core/utils/ui_helper.dart';
-import '../../dashboard/screens/dashboard.dart';
 import '../services/auth_service.dart';
 
 class LoginProvider with ChangeNotifier {
@@ -56,9 +56,10 @@ class LoginProvider with ChangeNotifier {
       if (result == null) {
         if (!ctx.mounted) return;
         resetProvider();
-        NavigationHelper.pushReplacement(
+        NavigationHelper.pushAndRemoveUntilNamed(
           ctx,
-          const DashboardScreen(),
+          AppRoutes.dashboard,
+          (route) => false,
         );
       } else {
         if (!ctx.mounted) return;
@@ -78,9 +79,10 @@ class LoginProvider with ChangeNotifier {
       if (result == "success") {
         if (!ctx.mounted) return;
         resetProvider();
-        NavigationHelper.pushReplacement(
+        NavigationHelper.pushAndRemoveUntilNamed(
           ctx,
-          const DashboardScreen(),
+          AppRoutes.dashboard,
+          (route) => false,
         );
       } else {
         // Display error message if Google sign-in fails

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/constants/routes.dart';
 import '../../../core/constants/strings.dart';
 import '../../../core/utils/navigation_helper.dart';
 import '../../../core/utils/secure_storage/secure_storage_keys.dart';
 import '../../../core/utils/secure_storage/secure_storage_util.dart';
-import '../../auth/screens/login.dart';
 import '../widgets/onboarding_page_content.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -78,9 +78,10 @@ class OnboardingScreenState extends State<OnboardingScreen> {
                           await secureStorageUtil.save(hasOnboarded, "true");
 
                           if (!context.mounted) return;
-                          NavigationHelper.pushReplacement(
+                          NavigationHelper.pushAndRemoveUntilNamed(
                             context,
-                            LoginScreen(),
+                            AppRoutes.login,
+                            (route) => false,
                           );
                         },
                         style: ElevatedButton.styleFrom(

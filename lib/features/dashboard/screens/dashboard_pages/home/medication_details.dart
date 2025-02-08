@@ -40,16 +40,16 @@ class _MedicationDetailScreenState extends State<MedicationDetailScreen> {
           .delete();
 
       // Step 4: Close the screen and show success message
-      if (mounted) {
-        NavigationHelper.pop(context);
-        showCustomSnackBar(
-          context,
-          '${widget.document['medication_name']} deleted successfully!',
-          Colors.green,
-        );
-      }
+      if (!mounted) return;
+      NavigationHelper.pop(context);
+      showCustomSnackBar(
+        context,
+        '${widget.document['medication_name']} deleted successfully!',
+        Colors.green,
+      );
     } catch (e) {
       // Step 5: Handle errors
+      if (!mounted) return;
       showCustomSnackBar(
         context,
         'Failed to delete medication!',
@@ -83,6 +83,7 @@ class _MedicationDetailScreenState extends State<MedicationDetailScreen> {
       setState(() {});
 
       // Step 5: Show success message
+      if (!mounted) return;
       showCustomSnackBar(
         context,
         'Dosage deleted successfully!',

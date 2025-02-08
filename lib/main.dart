@@ -1,16 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_medicine_tracker/features/dashboard/providers/home_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'core/constants/routes.dart';
 import 'core/constants/theme.dart';
 import 'features/auth/providers/login_provider.dart';
 import 'features/auth/providers/sign_up_provider.dart';
+import 'features/dashboard/providers/home_provider.dart';
 import 'features/medication/providers/medication_provider.dart';
-import 'features/splash/splash.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -52,7 +52,8 @@ class MyApp extends StatelessWidget {
             theme: AppThemes.lightTheme,
             darkTheme: AppThemes.darkTheme,
             themeMode: ThemeMode.system,
-            home: const SplashScreen(),
+            initialRoute: AppRoutes.splash,
+            onGenerateRoute: AppRoutes.generateRoute,
           ),
         );
       },

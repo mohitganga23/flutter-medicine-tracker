@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/constants/routes.dart';
 import '../../../../../core/utils/navigation_helper.dart';
-import '../../../../auth/screens/login.dart';
 import '../../../../auth/services/auth_service.dart';
-import '../../../../profile/screens/profile.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -34,7 +33,7 @@ class _AccountPageState extends State<AccountPage> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                NavigationHelper.push(context, const ProfileScreen());
+                NavigationHelper.pushNamed(context, AppRoutes.profile);
               },
               child: const Text("My Profile"),
             ),
@@ -43,9 +42,10 @@ class _AccountPageState extends State<AccountPage> {
               onPressed: () {
                 _authService.signOut().then((value) {
                   if (!context.mounted) return;
-                  NavigationHelper.pushReplacement(
+                  NavigationHelper.pushAndRemoveUntilNamed(
                     context,
-                    LoginScreen(),
+                    AppRoutes.login,
+                    (route) => false,
                   );
                 });
               },

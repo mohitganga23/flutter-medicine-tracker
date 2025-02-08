@@ -4,11 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/routes.dart';
 import '../../../core/utils/navigation_helper.dart';
 import '../../../core/utils/validators.dart';
 import '../providers/login_provider.dart';
-import 'forgot_password.dart';
-import 'signup.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -122,9 +121,9 @@ class LoginScreen extends StatelessWidget {
                           SystemChannels.textInput.invokeMethod(
                             'TextInput.hide',
                           );
-                          NavigationHelper.push(
+                          NavigationHelper.pushNamed(
                             context,
-                            const ForgotPasswordScreen(),
+                            AppRoutes.forgotPassword,
                           );
                         },
                         borderRadius: BorderRadius.circular(8.r),
@@ -187,9 +186,9 @@ class LoginScreen extends StatelessWidget {
                             SystemChannels.textInput.invokeMethod(
                               'TextInput.hide',
                             );
-                            NavigationHelper.push(
+                            NavigationHelper.pushNamed(
                               context,
-                              const SignUpScreen(),
+                              AppRoutes.signUp,
                             );
                           },
                           borderRadius: BorderRadius.circular(8.r),
