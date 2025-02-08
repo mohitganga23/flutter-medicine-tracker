@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +9,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import 'core/constants/routes.dart';
 import 'core/constants/theme.dart';
+import 'core/utils/logger.dart';
 import 'features/auth/providers/login_provider.dart';
 import 'features/auth/providers/sign_up_provider.dart';
 import 'features/dashboard/providers/home_provider.dart';
@@ -14,19 +17,34 @@ import 'features/medication/providers/medication_provider.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+      CustomLogger().error("Flutter Error", details.exception);
+    };
 
-  // Initialize Firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Screen Utils
-  await ScreenUtil.ensureScreenSize();
+    // Initialize Firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  // Initialize TimeZone
-  tz.initializeTimeZones();
-  tz.setLocalLocation(tz.getLocation('Asia/Kolkata'));
+    // Initialize Screen Utils
+    await ScreenUtil.ensureScreenSize();
 
-  runApp(const MyApp());
+    // Initialize TimeZone
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Asia/Kolkata'));
+
+    runApp(const MyApp());
+  }, (error, stackTrace) {
+    CustomLogger().fatal("Uncaught Error", {
+      "error": error.toString(),
+      "stackTrace": stackTrace.toString(),
+    });
+  });
 }
 
 class MyApp extends StatelessWidget {
