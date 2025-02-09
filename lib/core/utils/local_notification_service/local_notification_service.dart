@@ -13,7 +13,7 @@ class LocalNotificationService {
 
   Future<void> initializePlatformNotifications() async {
     const initializationSettingsAndroid = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+      '@mipmap/launcher_icon',
     );
 
     final initializationSettingsIOS = DarwinInitializationSettings(
@@ -145,6 +145,10 @@ class LocalNotificationService {
 
   Future<void> cancelNotification(int notificationID) async {
     await _localNotifications.cancel(notificationID);
+  }
+
+  Future<void> cancelAllNotifications() async {
+    await _localNotifications.cancelAll();
   }
 
   Future<void> scheduleMedicationNotifications(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_medicine_tracker/core/utils/local_notification_service/local_notification_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user_profile.dart';
@@ -8,6 +9,8 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  LocalNotificationService lns = LocalNotificationService();
 
   Future<String?> signInWithEmail(String email, String password) async {
     try {
@@ -101,6 +104,7 @@ class AuthService {
   }
 
   Future<void> signOut() async {
+    await lns.cancelAllNotifications();
     await _auth.signOut();
     await _googleSignIn.signOut();
   }
