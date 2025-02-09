@@ -1,27 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/utils/local_notification_service/local_notification_service.dart';
+import '../services/home_service.dart';
 
 class HomeProvider with ChangeNotifier {
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  final HomeService homeService = HomeService();
 
   Future<void> loadNotifications() async {
     LocalNotificationService lns = LocalNotificationService();
     lns.initializePlatformNotifications();
 
-    final email = auth.currentUser!.email;
-    final firestore = FirebaseFirestore.instance;
-
     // Step 1: Get all user medications
-    QuerySnapshot<Map<String, dynamic>> medList = await firestore
-        .collection('medications')
-        .doc(email)
-        .collection('user_medications')
-        .get();
+    QuerySnapshot<Map<String, dynamic>> medList =
+        await homeService.getAllUserMedication();
 
     // Step 2: Get pending notifications
     List<PendingNotificationRequest> pendingNotifications =
@@ -72,10 +66,6 @@ class HomeProvider with ChangeNotifier {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? getMedication() {
-    return FirebaseFirestore.instance
-        .collection('medications')
-        .doc(auth.currentUser!.email)
-        .collection('user_medications')
-        .snapshots();
+    return homeService.getMedicationStream();
   }
 }
