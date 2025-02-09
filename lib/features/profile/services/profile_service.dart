@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 
 class ProfileService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -18,7 +19,7 @@ class ProfileService {
 
       return docSnapshot;
     } catch (e) {
-      print('Error fetching user profile: $e');
+      if (kDebugMode) print('Error fetching user profile: $e');
       return null;
     }
   }
@@ -45,7 +46,7 @@ class ProfileService {
         'family_members': familyMembers,
       });
     } catch (e) {
-      print('Error updating user profile: $e');
+      if (kDebugMode) print('Error updating user profile: $e');
       rethrow;
     }
   }
@@ -63,7 +64,7 @@ class ProfileService {
       // Get download URL
       return await storageRef.getDownloadURL();
     } catch (e) {
-      print('Error uploading profile image: $e');
+      if (kDebugMode) print('Error uploading profile image: $e');
       return null;
     }
   }
