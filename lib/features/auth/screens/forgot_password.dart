@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_medicine_tracker/core/constants/assets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../core/utils/validators.dart';
@@ -39,17 +41,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      FlutterLogo(size: 30),
-                      SizedBox(width: 10),
+                      Image.asset(
+                        AppAssets.appLogo,
+                        height: 48.h,
+                        width: 48.h,
+                      ),
+                      SizedBox(width: 5.w),
                       Text(
                         'MediTrack',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
                         ),
                       ),
                     ],
@@ -62,7 +67,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -71,10 +75,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     padding: EdgeInsets.only(bottom: 5),
                     child: Text(
                       "Email Address",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
+                      style: TextStyle(fontSize: 18),
                     ),
                   ),
                   TextFormField(
