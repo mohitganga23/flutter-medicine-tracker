@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'colors.dart';
 
 class AppThemes {
   static final ThemeData lightTheme = ThemeData(
+    fontFamily: GoogleFonts.manrope().fontFamily,
     brightness: Brightness.light,
     primaryColor: AppColors.primaryLight,
     colorScheme: const ColorScheme.light(
@@ -29,6 +31,7 @@ class AppThemes {
   );
 
   static final ThemeData darkTheme = ThemeData(
+    fontFamily: GoogleFonts.manrope().fontFamily,
     brightness: Brightness.dark,
     primaryColor: AppColors.primaryDark,
     colorScheme: const ColorScheme.dark(
