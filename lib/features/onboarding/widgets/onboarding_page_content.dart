@@ -37,7 +37,6 @@ class OnboardingPageContent extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xFF424242),
               fontSize: 24.sp,
               fontWeight: FontWeight.bold,
             ),
@@ -47,7 +46,6 @@ class OnboardingPageContent extends StatelessWidget {
             description,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xFF757575),
               fontSize: 16.sp,
             ),
           ),

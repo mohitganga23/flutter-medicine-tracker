@@ -28,31 +28,38 @@ class AppThemes {
       bodyLarge: TextStyle(color: AppColors.textPrimaryLight),
       bodyMedium: TextStyle(color: AppColors.textSecondaryLight),
     ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: AppColors.surfaceLight,
+      backgroundColor: AppColors.primaryLight,
+    ),
   );
 
   static final ThemeData darkTheme = ThemeData(
-    fontFamily: GoogleFonts.manrope().fontFamily,
-    brightness: Brightness.dark,
-    primaryColor: AppColors.primaryDark,
-    colorScheme: const ColorScheme.dark(
-      primary: AppColors.primaryDark,
-      secondary: AppColors.secondaryDark,
-      surface: AppColors.surfaceDark,
-      error: AppColors.errorDark,
-      onPrimary: AppColors.textPrimaryDark,
-      onSecondary: AppColors.textPrimaryDark,
-      onSurface: AppColors.textPrimaryDark,
-      onError: AppColors.textPrimaryDark,
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        iconColor: AppColors.backgroundLight,
-        foregroundColor: AppColors.backgroundLight,
+      fontFamily: GoogleFonts.manrope().fontFamily,
+      brightness: Brightness.dark,
+      primaryColor: AppColors.primaryDark,
+      colorScheme: const ColorScheme.dark(
+        primary: AppColors.primaryDark,
+        secondary: AppColors.secondaryDark,
+        surface: AppColors.surfaceDark,
+        error: AppColors.errorDark,
+        onPrimary: AppColors.textPrimaryDark,
+        onSecondary: AppColors.textPrimaryDark,
+        onSurface: AppColors.textPrimaryDark,
+        onError: AppColors.textPrimaryDark,
       ),
-    ),
-    textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: AppColors.textPrimaryDark),
-      bodyMedium: TextStyle(color: AppColors.textSecondaryDark),
-    ),
-  );
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          iconColor: AppColors.backgroundLight,
+          foregroundColor: AppColors.backgroundLight,
+        ),
+      ),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: AppColors.textPrimaryDark),
+        bodyMedium: TextStyle(color: AppColors.textSecondaryDark),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: AppColors.surfaceLight,
+        backgroundColor: AppColors.primaryLight,
+      ));
 }

@@ -53,6 +53,7 @@ class LoginScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
+                          letterSpacing: 1.25,
                         ),
                       ),
                     ),
@@ -70,14 +71,14 @@ class LoginScreen extends StatelessWidget {
                         hintText: 'Enter...',
                         prefixIcon: Icon(Icons.email_outlined),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                          borderRadius: BorderRadius.all(Radius.circular(18.r)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.deepPurple,
                             width: 1.w,
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                          borderRadius: BorderRadius.all(Radius.circular(18.r)),
                         ),
                       ),
                       validator: validateEmail,
@@ -96,14 +97,14 @@ class LoginScreen extends StatelessWidget {
                       decoration: InputDecoration(
                         hintText: 'Enter...',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                          borderRadius: BorderRadius.all(Radius.circular(18.r)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.deepPurple,
                             width: 1,
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(12.r)),
+                          borderRadius: BorderRadius.all(Radius.circular(18.r)),
                         ),
                         prefixIcon: const Icon(Icons.lock_outline),
                         suffixIcon: IconButton(

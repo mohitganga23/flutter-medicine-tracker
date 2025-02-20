@@ -42,7 +42,6 @@ class OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       body: Column(
         children: [
           Expanded(
@@ -96,7 +95,6 @@ class OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                         child: Text(
                           "Get Started",
-                          style: TextStyle(color: Colors.white),
                         ),
                       )
                     : TextButton(
