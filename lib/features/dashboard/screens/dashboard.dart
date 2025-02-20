@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import 'dashboard_pages/account/account.dart';
 import 'dashboard_pages/home/home.dart';
@@ -20,12 +21,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       label: "Home",
     ),
     BottomNavigationBarItem(
+      icon: Icon(OctIcons.graph),
+      label: "Analytics",
+    ),
+    BottomNavigationBarItem(
       icon: Icon(CupertinoIcons.person_alt_circle),
       label: "Account",
     ),
   ];
 
-  static const List<Widget> _pages = [HomePage(), AccountPage()];
+  static final List<Widget> _pages = [HomePage(), Container(), AccountPage()];
 
   @override
   Widget build(BuildContext context) {
