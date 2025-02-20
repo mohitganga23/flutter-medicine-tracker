@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../core/constants/assets.dart';
 import '../../core/constants/routes.dart';
 import '../../core/constants/strings.dart';
-import '../../core/constants/text_styles.dart';
 import '../../core/utils/navigation_helper.dart';
 import '../../core/utils/secure_storage/secure_storage_keys.dart';
 import '../../core/utils/secure_storage/secure_storage_util.dart';
@@ -19,13 +19,37 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+  late Animation<Offset> _slideAnimation;
+
   final SecureStorageUtil secureStorageUtil = SecureStorageUtil();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+    );
+
+    // Opacity animation
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    // Slide animation
+    _slideAnimation =
+        Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0)).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    // Start the animations
+    _controller.forward();
 
     Timer(const Duration(seconds: 3), () {
       requestNotificationPermission();
@@ -63,12 +87,23 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              AppStrings.appName,
-              style: AppTextStyles.titleTextStyle,
+            // Fade-in animation for the logo
+            FadeTransition(
+              opacity: _opacityAnimation,
+              child: Image.asset(
+                AppAssets.appLogo,
+                height: 120.h,
+                width: 120.w,
+              ),
             ),
-            SizedBox(height: 10.h),
-            const CircularProgressIndicator(),
+            SizedBox(height: 10),
+            SlideTransition(
+              position: _slideAnimation,
+              child: Text(
+                AppStrings.appName,
+                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),
