@@ -70,6 +70,8 @@ dependencies:
 
   flutter_secure_storage: ^9.2.4
 
+  fl_chart: ^0.66.0
+
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3
   flutter_test:

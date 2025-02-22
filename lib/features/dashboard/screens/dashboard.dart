@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import 'dashboard_pages/account/account.dart';
+import 'dashboard_pages/analytics/medication_pie_chart.dart';
 import 'dashboard_pages/home/home.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -30,7 +31,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ),
   ];
 
-  static final List<Widget> _pages = [HomePage(), Container(), AccountPage()];
+  static final List<Widget> _pages = [
+    HomePage(),
+    MedicationTrackingScreen(),
+    AccountPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {

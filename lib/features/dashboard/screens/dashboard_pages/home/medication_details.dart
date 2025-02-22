@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../../../../core/utils/navigation_helper.dart';
-import '../../../../../core/utils/ui_helper.dart';
+import '../../../../../core/utils/ui_helper/snackbar.dart';
 
 class MedicationDetailScreen extends StatefulWidget {
   final QueryDocumentSnapshot<Map<String, dynamic>> document;

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -39,6 +41,7 @@ class HomeProvider with ChangeNotifier {
 
           // Extract medication name & dosage time
           String medicationName = tmp['medication_name'];
+          String member = tmp['member'];
           String time = dosage['time'];
 
           // Schedule the notification
@@ -46,6 +49,11 @@ class HomeProvider with ChangeNotifier {
             medicationName: medicationName,
             time: _parseTime(time),
             notificationId: notificationId,
+            payload: jsonEncode({
+              "medicationName": medicationName,
+              "member": member,
+              "dosageTime": time,
+            }),
           );
         }
       }

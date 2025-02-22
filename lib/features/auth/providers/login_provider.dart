@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/routes.dart';
 import '../../../core/utils/navigation_helper.dart';
-import '../../../core/utils/ui_helper.dart';
+import '../../../core/utils/ui_helper/snackbar.dart';
 import '../services/auth_service.dart';
 
 class LoginProvider with ChangeNotifier {

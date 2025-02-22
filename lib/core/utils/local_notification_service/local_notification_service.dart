@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_medicine_tracker/features/medication/services/medication_service.dart';
+import 'package:flutter_medicine_tracker/firebase_options.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -29,21 +33,23 @@ class LocalNotificationService {
 
     await _localNotifications.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: notificationTapBackground,
+      onDidReceiveNotificationResponse: (details) {
+        handleNotificationTap(details);
+      },
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
   }
 
-  void onDidReceiveLocalNotification(
-    int id,
-    String? title,
-    String? body,
-    String? payload,
-  ) {}
+  Future<void> cancelNotification(int notificationID) async {
+    await _localNotifications.cancel(notificationID);
+  }
 
-  void selectNotification(String? payload) {
-    if (payload != null && payload.isNotEmpty) {
-      behaviorSubject.add(payload);
-    }
+  Future<void> cancelAllNotifications() async {
+    await _localNotifications.cancelAll();
+  }
+
+  Future<List<PendingNotificationRequest>> getPendingNotificationRequest() {
+    return _localNotifications.pendingNotificationRequests();
   }
 
   Future<void> showLocalNotification({
@@ -97,6 +103,7 @@ class LocalNotificationService {
     required String medicationName,
     required TimeOfDay time,
     required int notificationId,
+    required String payload,
   }) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'medication_channel',
@@ -114,13 +121,24 @@ class LocalNotificationService {
       category: AndroidNotificationCategory.alarm,
       silent: false,
       vibrationPattern: Int64List.fromList([0, 1000]),
+      actions: [
+        const AndroidNotificationAction(
+          'TAKEN_ACTION',
+          'Taken',
+          showsUserInterface: false,
+        ),
+        const AndroidNotificationAction(
+          'DISMISS_ACTION',
+          'Dismiss',
+          cancelNotification: true,
+        ),
+      ],
     );
 
     NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
 
-    // Calculate the next occurrence of the time today
     final now = DateTime.now();
     final scheduleTime = DateTime(
       now.year,
@@ -140,36 +158,58 @@ class LocalNotificationService {
       matchDateTimeComponents: DateTimeComponents.time,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+      payload: payload,
     );
   }
 
-  Future<void> cancelNotification(int notificationID) async {
-    await _localNotifications.cancel(notificationID);
-  }
+  Future<void> handleNotificationTap(NotificationResponse response) async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  Future<void> cancelAllNotifications() async {
-    await _localNotifications.cancelAll();
-  }
-
-  Future<void> scheduleMedicationNotifications(
-    String medicationName,
-    List<TimeOfDay> times,
-  ) async {
-    for (int i = 0; i < times.length; i++) {
-      await scheduleMedicationNotification(
-        medicationName: medicationName,
-        time: times[i],
-        notificationId: i,
+    Map<String, dynamic> payload = jsonDecode(response.payload ?? "{}");
+    if (response.actionId == 'TAKEN_ACTION') {
+      await MedicationService.updateMedicationStatusInFirestore(
+        response.id!,
+        payload["medicationName"],
+        payload["member"],
+        payload["dosageTime"],
+        true,
+      );
+    } else if (response.actionId == 'DISMISS_ACTION') {
+      await MedicationService.updateMedicationStatusInFirestore(
+        response.id!,
+        payload["medicationName"],
+        payload["member"],
+        payload["dosageTime"],
+        false,
       );
     }
-  }
-
-  Future<List<PendingNotificationRequest>> getPendingNotificationRequest() {
-    return _localNotifications.pendingNotificationRequests();
   }
 }
 
 @pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  // handle action
+Future<void> notificationTapBackground(NotificationResponse response) async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  Map<String, dynamic> payload = jsonDecode(response.payload ?? "{}");
+  if (response.actionId == 'TAKEN_ACTION') {
+    await MedicationService.updateMedicationStatusInFirestore(
+      response.id!,
+      payload["medicationName"],
+      payload["member"],
+      payload["dosageTime"],
+      true,
+    );
+  } else if (response.actionId == 'DISMISS_ACTION') {
+    await MedicationService.updateMedicationStatusInFirestore(
+      response.id!,
+      payload["medicationName"],
+      payload["member"],
+      payload["dosageTime"],
+      false,
+    );
+  }
 }
