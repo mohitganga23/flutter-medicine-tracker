@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/routes.dart';
-import '../../../core/utils/navigation_helper.dart';
-import '../../../core/utils/ui_helper/snackbar.dart';
 import '../services/auth_service.dart';
 
 class LoginProvider with ChangeNotifier {
@@ -45,51 +42,17 @@ class LoginProvider with ChangeNotifier {
   Future<void> onLoginWithEmailClick(BuildContext ctx) async {
     if (formKey.currentState!.validate()) {
       toggleLoading();
-
-      String? result = await _authService.signInWithEmail(
-        emailController.text,
-        passwordController.text,
+      await _authService.signInWithEmail(
+        ctx: ctx,
+        email: emailController.text,
+        password: passwordController.text,
       );
-
-      toggleLoading();
-
-      if (result == null) {
-        if (!ctx.mounted) return;
-        resetProvider();
-        NavigationHelper.pushAndRemoveUntilNamed(
-          ctx,
-          AppRoutes.dashboard,
-          (route) => false,
-        );
-      } else {
-        if (!ctx.mounted) return;
-        showCustomSnackBar(ctx, result, Colors.red);
-      }
     }
   }
 
   Future<void> onLoginWithGoogleClick(BuildContext ctx) async {
     toggleSignInWithGoogleLoading();
-
-    String? result = await _authService.signInWithGoogle();
-
-    toggleSignInWithGoogleLoading();
-
-    if (result != null) {
-      if (result == "success") {
-        if (!ctx.mounted) return;
-        resetProvider();
-        NavigationHelper.pushAndRemoveUntilNamed(
-          ctx,
-          AppRoutes.dashboard,
-          (route) => false,
-        );
-      } else {
-        // Display error message if Google sign-in fails
-        if (!ctx.mounted) return;
-        showCustomSnackBar(ctx, result, Colors.red);
-      }
-    }
+    await _authService.signInWithGoogle(ctx: ctx);
   }
 
   resetProvider() {

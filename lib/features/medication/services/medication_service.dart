@@ -80,9 +80,10 @@ class MedicationService {
       medicationProvider.resetProvider();
 
       DialogHelper.showSuccessDialog(
-        ctx,
-        "Medication added successfully!",
-        () => NavigationHelper.pushAndRemoveUntilNamed(
+        context: ctx,
+        title: "Medication added successfully.",
+        message: "Your medication has been added and scheduled.",
+        onPressed: () => NavigationHelper.pushAndRemoveUntilNamed(
           ctx,
           AppRoutes.dashboard,
           (route) => false,

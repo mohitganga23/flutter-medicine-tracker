@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../core/constants/routes.dart';
-import '../../../core/utils/navigation_helper.dart';
-import '../../../core/utils/ui_helper/snackbar.dart';
-import '../services/auth_service.dart';
+import 'package:flutter_medicine_tracker/features/auth/services/auth_service.dart';
 
 class SignUpProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -51,30 +47,13 @@ class SignUpProvider with ChangeNotifier {
     if (_formKey.currentState!.validate()) {
       toggleSigningUpLoading();
 
-      String? result = await _authService.signUpWithEmail(
-        emailController.text,
-        passwordController.text,
+      await _authService.signUpWithEmail(
+        ctx: ctx,
+        email: emailController.text,
+        password: passwordController.text,
       );
 
       toggleSigningUpLoading();
-
-      if (result == null) {
-        if (!ctx.mounted) return;
-        showCustomSnackBar(
-          ctx,
-          "Your account has been created successfully...",
-          Colors.green,
-          durationInSeconds: 5,
-        );
-
-        NavigationHelper.pushAndRemoveUntilNamed(
-          ctx,
-          AppRoutes.login,
-          (route) => false,
-        );
-      } else {
-        _errorMessage = result;
-      }
     }
   }
 

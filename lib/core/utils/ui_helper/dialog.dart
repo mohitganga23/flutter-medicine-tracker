@@ -100,11 +100,12 @@ class DialogHelper {
     );
   }
 
-  static void showSuccessDialog(
-    BuildContext context,
-    String message,
-    void Function()? onPressed,
-  ) {
+  static void showSuccessDialog({
+    required BuildContext context,
+    required String title,
+    required String message,
+    required void Function()? onPressed,
+  }) {
     _showDialog(
       context,
       title: "Success",
@@ -118,14 +119,15 @@ class DialogHelper {
   }
 
   /// Show Error Dialog
-  static void showErrorDialog(
-    BuildContext context,
-    String message,
-    void Function()? onPressed,
-  ) {
+  static void showErrorDialog({
+    required BuildContext context,
+    required String title,
+    required String message,
+    required void Function()? onPressed,
+  }) {
     _showDialog(
       context,
-      title: "Error",
+      title: title,
       message: message,
       onPressed: onPressed,
       icon: Icons.error,
@@ -136,11 +138,12 @@ class DialogHelper {
   }
 
   /// Show Info Dialog
-  static void showInfoDialog(
-    BuildContext context,
-    String message,
-    void Function()? onPressed,
-  ) {
+  static void showInfoDialog({
+    required BuildContext context,
+    required String title,
+    required String message,
+    required void Function()? onPressed,
+  }) {
     _showDialog(
       context,
       title: "Information",
