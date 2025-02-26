@@ -108,7 +108,7 @@ class DialogHelper {
   }) {
     _showDialog(
       context,
-      title: "Success",
+      title: title,
       message: message,
       onPressed: onPressed,
       icon: Icons.check_circle,
@@ -146,7 +146,7 @@ class DialogHelper {
   }) {
     _showDialog(
       context,
-      title: "Information",
+      title: title,
       message: message,
       onPressed: onPressed,
       icon: Icons.info,

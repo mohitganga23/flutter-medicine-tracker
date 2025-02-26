@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             onPressed: () async {
-              var userData = await _profileService.getUserProfile();
+              var userData = await _profileService.getUserProfile(context);
 
               if (!context.mounted) return;
               await NavigationHelper.pushNamed(
@@ -46,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>?>?>(
-        future: _profileService.getUserProfile(),
+        future: _profileService.getUserProfile(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -90,7 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         backgroundImage: data['profile_photo_url'] != ""
                             ? NetworkImage(data['profile_photo_url'])
                             : const AssetImage('assets/default_profile.png')
-                                as ImageProvider,
+                        as ImageProvider,
                         backgroundColor: Colors.deepPurpleAccent,
                       ),
                     ),

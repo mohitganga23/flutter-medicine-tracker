@@ -4,13 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_medicine_tracker/core/utils/exception_handler/exception_handler.dart';
 
 class ProfileService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<DocumentSnapshot<Map<String, dynamic>?>?> getUserProfile() async {
+  Future<DocumentSnapshot<Map<String, dynamic>?>?> getUserProfile(
+      BuildContext ctx,
+      ) async {
     try {
       final docSnapshot = await _firestore
           .collection('user_profile')
@@ -19,12 +23,14 @@ class ProfileService {
 
       return docSnapshot;
     } catch (e) {
-      if (kDebugMode) print('Error fetching user profile: $e');
+      if (!ctx.mounted) return null;
+      ExceptionHandler.onException(ctx, e);
       return null;
     }
   }
 
   Future<void> updateUserProfile({
+    required BuildContext ctx,
     required String name,
     required String age,
     required String gender,
@@ -46,8 +52,7 @@ class ProfileService {
         'family_members': familyMembers,
       });
     } catch (e) {
-      if (kDebugMode) print('Error updating user profile: $e');
-      rethrow;
+      if (ctx.mounted) ExceptionHandler.onException(ctx, e);
     }
   }
 

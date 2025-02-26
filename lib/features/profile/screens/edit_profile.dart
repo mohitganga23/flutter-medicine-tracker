@@ -77,11 +77,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       await _profileService.updateUserProfile(
+        ctx: context,
         name: _nameController.text.trim(),
         age: _ageController.text.trim(),
         gender: _selectedGender.toString(),
         profilePhotoUrl:
-            _profilePhotoUrl != null ? _profilePhotoUrl.toString() : "-",
+        _profilePhotoUrl != null ? _profilePhotoUrl.toString() : "-",
         profileImage: _profileImage,
         familyMembers: _familyMembers,
       );
@@ -137,27 +138,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   backgroundColor: Colors.deepPurpleAccent,
                   child: _profileImage != null
                       ? ClipOval(
-                          child: Image.file(
-                            _profileImage!,
-                            width: 120,
-                            height: 120,
-                            fit: BoxFit.cover,
-                          ),
-                        )
+                    child: Image.file(
+                      _profileImage!,
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  )
                       : _profilePhotoUrl != null && _profilePhotoUrl!.isNotEmpty
-                          ? ClipOval(
-                              child: Image.network(
-                                _profilePhotoUrl!,
-                                width: 120,
-                                height: 120,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : const Icon(
-                              Icons.person,
-                              size: 60,
-                              color: Colors.white,
-                            ),
+                      ? ClipOval(
+                    child: Image.network(
+                      _profilePhotoUrl!,
+                      width: 120,
+                      height: 120,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                      : const Icon(
+                    Icons.person,
+                    size: 60,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -199,10 +200,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 items: ['Male', 'Female', 'Other']
                     .map(
                       (gender) => DropdownMenuItem<String>(
-                        value: gender,
-                        child: Text(gender),
-                      ),
-                    )
+                    value: gender,
+                    child: Text(gender),
+                  ),
+                )
                     .toList(),
                 onChanged: (value) {
                   setState(() {

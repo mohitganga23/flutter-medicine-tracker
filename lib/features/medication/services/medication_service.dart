@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_medicine_tracker/core/constants/routes.dart';
+import 'package:flutter_medicine_tracker/core/utils/exception_handler/exception_handler.dart';
 import 'package:flutter_medicine_tracker/core/utils/ui_helper/dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/local_notification_service/local_notification_service.dart';
 import '../../../core/utils/navigation_helper.dart';
-import '../../../core/utils/ui_helper/snackbar.dart';
 import '../providers/medication_provider.dart';
 
 class MedicationService {
@@ -18,12 +18,12 @@ class MedicationService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> addAndScheduleMedication(
-    BuildContext ctx,
-    String selectedMember,
-    String medicationName,
-    String attachNote,
-    List<TimeOfDay> dosageTiming,
-  ) async {
+      BuildContext ctx,
+      String selectedMember,
+      String medicationName,
+      String attachNote,
+      List<TimeOfDay> dosageTiming,
+      ) async {
     MedicationProvider medicationProvider = Provider.of<MedicationProvider>(
       ctx,
       listen: false,
@@ -86,15 +86,11 @@ class MedicationService {
         onPressed: () => NavigationHelper.pushAndRemoveUntilNamed(
           ctx,
           AppRoutes.dashboard,
-          (route) => false,
+              (route) => false,
         ),
       );
     } catch (e) {
-      showCustomSnackBar(
-        ctx,
-        'Failed to add medication...',
-        Colors.red,
-      );
+      ExceptionHandler.onException(ctx, e);
     } finally {
       medicationProvider.toggleLoading();
     }
@@ -105,7 +101,8 @@ class MedicationService {
       String medicationId,
       String dosageId,
       String dosageTime,
-      bool isTaken) async {
+      bool isTaken,
+      ) async {
     try {
       FirebaseAuth auth = FirebaseAuth.instance;
       FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -166,11 +163,11 @@ class MedicationService {
       for (var medicationDoc in medicationQuery.docs) {
         List<dynamic> dosages = medicationDoc['dosages'] ?? [];
         DateTime createdAt =
-            (medicationDoc['created_at'] as Timestamp).toDate();
+        (medicationDoc['created_at'] as Timestamp).toDate();
 
         for (DateTime date = createdAt;
-            date.isBefore(today) || date.isAtSameMomentAs(today);
-            date = date.add(Duration(days: 1))) {
+        date.isBefore(today) || date.isAtSameMomentAs(today);
+        date = date.add(Duration(days: 1))) {
           String dateKey = DateFormat('yyyy-MM-dd').format(date);
 
           for (var dosage in dosages) {
@@ -179,12 +176,12 @@ class MedicationService {
 
             // Check if this dosage was tracked
             bool isTaken = dosage['tracked']?.any((entry) =>
-                    (entry['dateTime'] as Timestamp).toDate().toLocal().day ==
-                        date.day &&
-                    (entry['dateTime'] as Timestamp).toDate().toLocal().month ==
-                        date.month &&
-                    (entry['dateTime'] as Timestamp).toDate().toLocal().year ==
-                        date.year) ??
+            (entry['dateTime'] as Timestamp).toDate().toLocal().day ==
+                date.day &&
+                (entry['dateTime'] as Timestamp).toDate().toLocal().month ==
+                    date.month &&
+                (entry['dateTime'] as Timestamp).toDate().toLocal().year ==
+                    date.year) ??
                 false;
 
             if (isTaken) {
@@ -205,118 +202,4 @@ class MedicationService {
       return {};
     }
   }
-
-// static Future<void> updateMedicationStatusInFirestore(
-//   int notificationId,
-//   String medicationName,
-//   String member,
-//   String dosageTime,
-//   bool isTaken,
-// ) async {
-//   try {
-//     FirebaseAuth auth = FirebaseAuth.instance;
-//     FirebaseFirestore firestore = FirebaseFirestore.instance;
-//
-//     String userEmail = auth.currentUser!.email!;
-//
-//     await firestore
-//         .collection('medication_tracking')
-//         .doc(userEmail) // Store under user's document
-//         .collection('tracked_medications')
-//         .add({
-//       'notificationId': notificationId,
-//       'medicationName': medicationName,
-//       'member': member,
-//       'dosageTime': dosageTime,
-//       'status': isTaken ? 'taken' : 'missed',
-//       'actionAt': FieldValue.serverTimestamp(),
-//     });
-//   } catch (e) {
-//     print("Error updating medication tracking: $e");
-//   }
-// }
-
-// Future<void> addAndScheduleMedication(
-//   BuildContext ctx,
-//   String selectedMember,
-//   String medicationName,
-//   String attachNote,
-//   List<TimeOfDay> dosageTiming,
-// ) async {
-//   MedicationProvider medicationProvider = Provider.of<MedicationProvider>(
-//     ctx,
-//     listen: false,
-//   );
-//
-//   medicationProvider.toggleLoading();
-//
-//   LocalNotificationService lns = LocalNotificationService();
-//   lns.initializePlatformNotifications();
-//
-//   try {
-//     List<Dosage> dosages = [];
-//
-//     for (var time in dosageTiming) {
-//       final String formattedTime = time.format(ctx);
-//
-//       // Generate a unique notification ID for each dosage
-//       int notificationId = DateTime.now().millisecondsSinceEpoch.remainder(
-//             2147483647,
-//           );
-//
-//       // Create Dosage object
-//       dosages.add(
-//         Dosage(
-//           time: formattedTime,
-//           status: 'pending',
-//           notificationId: notificationId,
-//         ),
-//       );
-//
-//       // Schedule Notification
-//       lns.scheduleMedicationNotification(
-//         medicationName: medicationName,
-//         time: time,
-//         notificationId: notificationId,
-//       );
-//     }
-//
-//     // Create Medication object with nested dosages
-//     Medication medication = Medication(
-//       member: selectedMember,
-//       medicationName: medicationName,
-//       notes: attachNote,
-//       createdAt: DateTime.now(),
-//       dosages: dosages,
-//     );
-//
-//     // Save the medication and its dosages in Firestore as a single document
-//     await _firestore
-//         .collection('medications')
-//         .doc(_auth.currentUser!.email.toString())
-//         .collection('user_medications')
-//         .add(medication.toMap());
-//
-//     if (!ctx.mounted) return;
-//     medicationProvider.resetProvider();
-//
-//     DialogHelper.showSuccessDialog(
-//       ctx,
-//       "Medication added successfully!",
-//       () => NavigationHelper.pushAndRemoveUntilNamed(
-//         ctx,
-//         AppRoutes.dashboard,
-//         (route) => false,
-//       ),
-//     );
-//   } catch (e) {
-//     showCustomSnackBar(
-//       ctx,
-//       'Failed to add medication...',
-//       Colors.red,
-//     );
-//   } finally {
-//     medicationProvider.toggleLoading();
-//   }
-// }
 }
