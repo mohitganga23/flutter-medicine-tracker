@@ -40,6 +40,20 @@ class _AccountPageState extends State<AccountPage> {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
+                _authService.deleteUserAccount(context).then((value) {
+                  if (!context.mounted) return;
+                  NavigationHelper.pushAndRemoveUntilNamed(
+                    context,
+                    AppRoutes.login,
+                    (route) => false,
+                  );
+                });
+              },
+              child: const Text("Delete Account"),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
                 _authService.signOut().then((value) {
                   if (!context.mounted) return;
                   NavigationHelper.pushAndRemoveUntilNamed(

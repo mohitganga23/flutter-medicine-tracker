@@ -52,8 +52,6 @@ class SignUpProvider with ChangeNotifier {
         email: emailController.text,
         password: passwordController.text,
       );
-
-      toggleSigningUpLoading();
     }
   }
 
