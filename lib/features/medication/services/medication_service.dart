@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_medicine_tracker/core/constants/routes.dart';
 import 'package:flutter_medicine_tracker/core/utils/exception_handler/exception_handler.dart';
 import 'package:flutter_medicine_tracker/core/utils/ui_helper/dialog.dart';
+import 'package:flutter_medicine_tracker/features/medication/models/medication_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +19,12 @@ class MedicationService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> addAndScheduleMedication(
-      BuildContext ctx,
-      String selectedMember,
-      String medicationName,
-      String attachNote,
-      List<TimeOfDay> dosageTiming,
-      ) async {
+    BuildContext ctx,
+    String selectedMember,
+    String medicationName,
+    String attachNote,
+    List<TimeOfDay> dosageTiming,
+  ) async {
     MedicationProvider medicationProvider = Provider.of<MedicationProvider>(
       ctx,
       listen: false,
@@ -34,19 +35,8 @@ class MedicationService {
     LocalNotificationService lns = LocalNotificationService();
 
     try {
+      List<Dosage> dosages = [];
       String userEmail = _auth.currentUser!.email.toString();
-
-      // Create Medication document
-      DocumentReference medicationRef = await _firestore
-          .collection('users')
-          .doc(userEmail)
-          .collection('user_medications')
-          .add({
-        'medicationName': medicationName,
-        'member': selectedMember,
-        'notes': attachNote,
-        'createdAt': FieldValue.serverTimestamp(),
-      });
 
       // Store dosages in a separate sub collection
       for (var time in dosageTiming) {
@@ -56,11 +46,13 @@ class MedicationService {
         // Unique notification ID based on hash
         int notificationId = '${medicationName}_$formattedTime'.hashCode;
 
-        await medicationRef.collection('dosages').add({
-          'time': formattedTime,
-          'status': 'pending',
-          'notificationId': notificationId,
-        });
+        dosages.add(
+          Dosage(
+            time: formattedTime,
+            status: 'pending',
+            notificationId: notificationId,
+          ),
+        );
 
         // Schedule Notification
         lns.scheduleMedicationNotification(
@@ -75,6 +67,22 @@ class MedicationService {
         );
       }
 
+      // Create Medication object with nested dosages
+      Medication medication = Medication(
+        member: selectedMember,
+        medicationName: medicationName,
+        notes: attachNote,
+        createdAt: DateTime.now(),
+        dosages: dosages,
+      );
+
+      // Save the medication and its dosages in Firestore as a single document
+      await _firestore
+          .collection('medications')
+          .doc(userEmail)
+          .collection('user_medications')
+          .add(medication.toMap());
+
       // Reset UI State
       if (!ctx.mounted) return;
       medicationProvider.resetProvider();
@@ -86,7 +94,7 @@ class MedicationService {
         onPressed: () => NavigationHelper.pushAndRemoveUntilNamed(
           ctx,
           AppRoutes.dashboard,
-              (route) => false,
+          (route) => false,
         ),
       );
     } catch (e) {
@@ -97,12 +105,12 @@ class MedicationService {
   }
 
   static Future<void> updateMedicationStatusInFirestore(
-      int notificationId,
-      String medicationId,
-      String dosageId,
-      String dosageTime,
-      bool isTaken,
-      ) async {
+    int notificationId,
+    String medicationId,
+    String dosageId,
+    String dosageTime,
+    bool isTaken,
+  ) async {
     try {
       FirebaseAuth auth = FirebaseAuth.instance;
       FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -163,11 +171,11 @@ class MedicationService {
       for (var medicationDoc in medicationQuery.docs) {
         List<dynamic> dosages = medicationDoc['dosages'] ?? [];
         DateTime createdAt =
-        (medicationDoc['created_at'] as Timestamp).toDate();
+            (medicationDoc['created_at'] as Timestamp).toDate();
 
         for (DateTime date = createdAt;
-        date.isBefore(today) || date.isAtSameMomentAs(today);
-        date = date.add(Duration(days: 1))) {
+            date.isBefore(today) || date.isAtSameMomentAs(today);
+            date = date.add(Duration(days: 1))) {
           String dateKey = DateFormat('yyyy-MM-dd').format(date);
 
           for (var dosage in dosages) {
@@ -176,12 +184,12 @@ class MedicationService {
 
             // Check if this dosage was tracked
             bool isTaken = dosage['tracked']?.any((entry) =>
-            (entry['dateTime'] as Timestamp).toDate().toLocal().day ==
-                date.day &&
-                (entry['dateTime'] as Timestamp).toDate().toLocal().month ==
-                    date.month &&
-                (entry['dateTime'] as Timestamp).toDate().toLocal().year ==
-                    date.year) ??
+                    (entry['dateTime'] as Timestamp).toDate().toLocal().day ==
+                        date.day &&
+                    (entry['dateTime'] as Timestamp).toDate().toLocal().month ==
+                        date.month &&
+                    (entry['dateTime'] as Timestamp).toDate().toLocal().year ==
+                        date.year) ??
                 false;
 
             if (isTaken) {
