@@ -13,8 +13,8 @@ class ProfileService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<DocumentSnapshot<Map<String, dynamic>?>?> getUserProfile(
-      BuildContext ctx,
-      ) async {
+    BuildContext ctx,
+  ) async {
     try {
       final docSnapshot = await _firestore
           .collection('user_profile')
@@ -41,6 +41,13 @@ class ProfileService {
   }) async {
     // TODO: implement updateProfile
     try {
+      String currentPhotoUrl = "";
+      if (profileImage != null) {
+        currentPhotoUrl = (await uploadProfileImage(profileImage))!;
+      } else {
+        currentPhotoUrl = profilePhotoUrl;
+      }
+
       await _firestore
           .collection('user_profile')
           .doc(_auth.currentUser!.email)
