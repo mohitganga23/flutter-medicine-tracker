@@ -4,6 +4,98 @@ import 'package:google_fonts/google_fonts.dart';
 import 'colors.dart';
 
 class AppThemes {
+  static TextTheme _buildTextTheme(
+    Color primaryTextColor,
+    Color secondaryTextColor,
+  ) {
+    return TextTheme(
+      // Display (Large Headers / Hero Text)
+      displayLarge: TextStyle(
+        fontSize: 57,
+        fontWeight: FontWeight.bold,
+        color: primaryTextColor,
+      ),
+      displayMedium: TextStyle(
+        fontSize: 45,
+        fontWeight: FontWeight.bold,
+        color: primaryTextColor,
+      ),
+      displaySmall: TextStyle(
+        fontSize: 36,
+        fontWeight: FontWeight.bold,
+        color: primaryTextColor,
+      ),
+
+      // Headlines (Page / Section Titles)
+      headlineLarge: TextStyle(
+        fontSize: 32,
+        fontWeight: FontWeight.w700,
+        color: primaryTextColor,
+      ),
+      headlineMedium: TextStyle(
+        fontSize: 28,
+        fontWeight: FontWeight.w600,
+        color: primaryTextColor,
+      ),
+      headlineSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+        color: primaryTextColor,
+      ),
+
+      // Titles (App Bar / Cards)
+      titleLarge: TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        color: primaryTextColor,
+      ),
+      titleMedium: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: primaryTextColor,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: secondaryTextColor,
+      ),
+
+      // Body (General Text)
+      bodyLarge: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        color: primaryTextColor,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: secondaryTextColor,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: secondaryTextColor,
+      ),
+
+      // Labels (Buttons, Captions, Small Text)
+      labelLarge: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: primaryTextColor,
+      ),
+      labelMedium: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: secondaryTextColor,
+      ),
+      labelSmall: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        color: secondaryTextColor,
+      ),
+    );
+  }
+
   static final ThemeData lightTheme = ThemeData(
     fontFamily: GoogleFonts.manrope().fontFamily,
     brightness: Brightness.light,
@@ -24,9 +116,9 @@ class AppThemes {
         foregroundColor: AppColors.backgroundLight,
       ),
     ),
-    textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: AppColors.textPrimaryLight),
-      bodyMedium: TextStyle(color: AppColors.textSecondaryLight),
+    textTheme: _buildTextTheme(
+      AppColors.textPrimaryLight,
+      AppColors.textSecondaryLight,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       foregroundColor: AppColors.surfaceLight,
@@ -35,31 +127,32 @@ class AppThemes {
   );
 
   static final ThemeData darkTheme = ThemeData(
-      fontFamily: GoogleFonts.manrope().fontFamily,
-      brightness: Brightness.dark,
-      primaryColor: AppColors.primaryDark,
-      colorScheme: const ColorScheme.dark(
-        primary: AppColors.primaryDark,
-        secondary: AppColors.secondaryDark,
-        surface: AppColors.surfaceDark,
-        error: AppColors.errorDark,
-        onPrimary: AppColors.textPrimaryDark,
-        onSecondary: AppColors.textPrimaryDark,
-        onSurface: AppColors.textPrimaryDark,
-        onError: AppColors.textPrimaryDark,
+    fontFamily: GoogleFonts.manrope().fontFamily,
+    brightness: Brightness.dark,
+    primaryColor: AppColors.primaryDark,
+    colorScheme: const ColorScheme.dark(
+      primary: AppColors.primaryDark,
+      secondary: AppColors.secondaryDark,
+      surface: AppColors.surfaceDark,
+      error: AppColors.errorDark,
+      onPrimary: AppColors.textPrimaryDark,
+      onSecondary: AppColors.textPrimaryDark,
+      onSurface: AppColors.textPrimaryDark,
+      onError: AppColors.textPrimaryDark,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        iconColor: AppColors.backgroundLight,
+        foregroundColor: AppColors.backgroundLight,
       ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          iconColor: AppColors.backgroundLight,
-          foregroundColor: AppColors.backgroundLight,
-        ),
-      ),
-      textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: AppColors.textPrimaryDark),
-        bodyMedium: TextStyle(color: AppColors.textSecondaryDark),
-      ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        foregroundColor: AppColors.surfaceLight,
-        backgroundColor: AppColors.primaryLight,
-      ));
+    ),
+    textTheme: _buildTextTheme(
+      AppColors.textPrimaryDark,
+      AppColors.textSecondaryDark,
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: AppColors.surfaceLight,
+      backgroundColor: AppColors.primaryLight,
+    ),
+  );
 }
