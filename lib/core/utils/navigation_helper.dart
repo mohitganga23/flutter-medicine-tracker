@@ -5,7 +5,7 @@ class NavigationHelper {
   static Future<T?> push<T>(BuildContext context, Widget widget) {
     return Navigator.push<T>(
       context,
-      _fadeRoute(widget),
+      fadeRoute(widget),
     );
   }
 
@@ -16,7 +16,7 @@ class NavigationHelper {
   ) {
     return Navigator.pushReplacement<T, TO>(
       context,
-      _fadeRoute(widget),
+      fadeRoute(widget),
     );
   }
 
@@ -28,7 +28,7 @@ class NavigationHelper {
   ) {
     return Navigator.pushAndRemoveUntil<T>(
       context,
-      _fadeRoute(widget),
+      fadeRoute(widget),
       predicate,
     );
   }
@@ -76,16 +76,13 @@ class NavigationHelper {
   }
 
   /// Creates a fade transition route.
-  static PageRouteBuilder<T> _fadeRoute<T>(Widget widget) {
+  static PageRouteBuilder<T> fadeRoute<T>(Widget widget) {
     return PageRouteBuilder<T>(
       pageBuilder: (context, animation, secondaryAnimation) => widget,
+      transitionDuration: const Duration(milliseconds: 300),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = 0.0;
-        var end = 1.0;
-        var curve = Curves.easeInOut;
-
-        var tween = Tween(begin: begin, end: end).chain(
-          CurveTween(curve: curve),
+        var tween = Tween(begin: 0.0, end: 1.0).chain(
+          CurveTween(curve: Curves.easeInOut),
         );
 
         var fadeAnimation = animation.drive(tween);

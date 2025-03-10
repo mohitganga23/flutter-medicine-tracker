@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_medicine_tracker/core/constants/hero.dart';
+import 'package:flutter_medicine_tracker/core/constants/text_styles.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constants/assets.dart';
@@ -34,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 3),
     );
 
     // Opacity animation
@@ -51,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
     // Start the animations
     _controller.forward();
 
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 5), () {
       requestNotificationPermission();
       _checkUserSignIn();
     });
@@ -90,10 +92,13 @@ class _SplashScreenState extends State<SplashScreen>
             // Fade-in animation for the logo
             FadeTransition(
               opacity: _opacityAnimation,
-              child: Image.asset(
-                AppAssets.appLogo,
-                height: 120.h,
-                width: 120.w,
+              child: Hero(
+                tag: AppHeroTag.splashToLogin,
+                child: Image.asset(
+                  AppAssets.appLogo,
+                  height: 120.h,
+                  width: 120.w,
+                ),
               ),
             ),
             SizedBox(height: 10),
@@ -101,7 +106,7 @@ class _SplashScreenState extends State<SplashScreen>
               position: _slideAnimation,
               child: Text(
                 AppStrings.appName,
-                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                style: AppTextStyles.splashTitle(context),
               ),
             ),
           ],

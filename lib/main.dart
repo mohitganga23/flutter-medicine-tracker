@@ -50,8 +50,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
+  static final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +69,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: 'Flutter Medicine',
             debugShowCheckedModeBanner: false,
-            navigatorKey: navigatorKey,
+            navigatorKey: navKey,
             theme: AppThemes.lightTheme,
             darkTheme: AppThemes.darkTheme,
             themeMode: ThemeMode.system,

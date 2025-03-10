@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_medicine_tracker/core/constants/assets.dart';
+import 'package:flutter_medicine_tracker/core/constants/hero.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -29,10 +30,13 @@ class SignUpScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            AppAssets.appLogo,
-                            height: 48.h,
-                            width: 48.h,
+                          Hero(
+                            tag: AppHeroTag.splashToLogin,
+                            child: Image.asset(
+                              AppAssets.appLogo,
+                              height: 48.h,
+                              width: 48.h,
+                            ),
                           ),
                           SizedBox(width: 5.w),
                           Text(

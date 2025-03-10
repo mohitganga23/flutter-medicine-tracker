@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_medicine_tracker/core/utils/navigation_helper.dart';
 
 import '../../features/auth/screens/forgot_password.dart';
 import '../../features/auth/screens/login.dart';
@@ -27,35 +28,33 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
-        return MaterialPageRoute(builder: (context) => SplashScreen());
+        return NavigationHelper.fadeRoute(SplashScreen());
       case onBoarding:
-        return MaterialPageRoute(builder: (context) => OnboardingScreen());
+        return NavigationHelper.fadeRoute(OnboardingScreen());
       case login:
-        return MaterialPageRoute(builder: (context) => LoginScreen());
+        return NavigationHelper.fadeRoute(LoginScreen());
       case signUp:
-        return MaterialPageRoute(builder: (context) => SignUpScreen());
+        return NavigationHelper.fadeRoute(SignUpScreen());
       case forgotPassword:
-        return MaterialPageRoute(builder: (context) => ForgotPasswordScreen());
+        return NavigationHelper.fadeRoute(ForgotPasswordScreen());
       case dashboard:
-        return MaterialPageRoute(builder: (context) => DashboardScreen());
+        return NavigationHelper.fadeRoute(DashboardScreen());
       case addMedication:
-        return MaterialPageRoute(builder: (context) => AddMedicationForm());
+        return NavigationHelper.fadeRoute(AddMedicationForm());
       case medicationDetails:
         final args =
             settings.arguments as QueryDocumentSnapshot<Map<String, dynamic>>;
-        return MaterialPageRoute(
-          builder: (context) => MedicationDetailScreen(document: args),
+        return NavigationHelper.fadeRoute(
+          MedicationDetailScreen(document: args),
         );
       case profile:
-        return MaterialPageRoute(builder: (context) => ProfileScreen());
+        return NavigationHelper.fadeRoute(ProfileScreen());
       case editProfile:
         final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (context) => EditProfileScreen(userProfile: args),
-        );
+        return NavigationHelper.fadeRoute(EditProfileScreen(userProfile: args));
       default:
-        return MaterialPageRoute(
-          builder: (context) => Scaffold(
+        return NavigationHelper.fadeRoute(
+          Scaffold(
             body: Center(child: Text("Page not found")),
           ),
         );
