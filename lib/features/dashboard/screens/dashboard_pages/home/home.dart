@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/routes.dart';
@@ -54,6 +56,23 @@ class _HomePageState extends State<HomePage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
+                if (snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(FontAwesome.pills_solid, size: 60.h),
+                        SizedBox(height: 10.h),
+                        Text(
+                          "No medications available."
+                          "\nClick below to add medication.",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                  );
+                }
                 return ListView(
                   children: snapshot.data!.docs.map((document) {
                     return MedicationCard(document: document);

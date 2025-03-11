@@ -51,12 +51,12 @@ class AppThemes {
         color: primaryTextColor,
       ),
       titleMedium: TextStyle(
-        fontSize: 18.sp,
+        fontSize: 20.sp,
         fontWeight: FontWeight.w500,
         color: primaryTextColor,
       ),
       titleSmall: TextStyle(
-        fontSize: 16.sp,
+        fontSize: 18.sp,
         fontWeight: FontWeight.w500,
         color: secondaryTextColor,
       ),
