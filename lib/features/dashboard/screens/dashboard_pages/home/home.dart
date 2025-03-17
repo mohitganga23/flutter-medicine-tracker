@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
+import 'package:flutter_medicine_tracker/core/constants/routes.dart';
+import 'package:flutter_medicine_tracker/core/utils/navigation_helper.dart';
+import 'package:flutter_medicine_tracker/features/dashboard/providers/home_provider.dart';
+import 'package:flutter_medicine_tracker/features/dashboard/widgets/medication_card.dart';
+import 'package:flutter_medicine_tracker/features/dashboard/widgets/no_medication_available.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/constants/routes.dart';
-import '../../../../../core/utils/navigation_helper.dart';
-import '../../../providers/home_provider.dart';
-import '../../../widgets/medication_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,9 +37,9 @@ class _HomePageState extends State<HomePage> {
           appBar: AppBar(
             toolbarHeight: 90,
             automaticallyImplyLeading: false,
-            title: const Text(
+            title: Text(
               "Dashboard",
-              style: TextStyle(fontSize: 36),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(
@@ -57,21 +56,7 @@ class _HomePageState extends State<HomePage> {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasData) {
                 if (snapshot.data!.docs.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(FontAwesome.pills_solid, size: 60.h),
-                        SizedBox(height: 10.h),
-                        Text(
-                          "No medications available."
-                          "\nClick below to add medication.",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
-                    ),
-                  );
+                  return NoMedicationAvailable();
                 }
                 return ListView(
                   children: snapshot.data!.docs.map((document) {
@@ -79,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   }).toList(),
                 );
               } else {
-                return const Center(child: Text("No medications available"));
+                return NoMedicationAvailable();
               }
             },
           ),

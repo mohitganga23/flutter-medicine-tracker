@@ -16,9 +16,6 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    double textScaleFactor = screenWidth / 350;
-
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Center(
@@ -27,8 +24,7 @@ class _AccountPageState extends State<AccountPage> {
           children: [
             Text(
               'Account',
-              style: const TextStyle(fontSize: 24),
-              textScaler: TextScaler.linear(textScaleFactor),
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
             const SizedBox(height: 10),
             ElevatedButton(
