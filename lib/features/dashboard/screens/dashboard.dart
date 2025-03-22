@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_medicine_tracker/features/dashboard/screens/dashboard_pages/analytics/medication_stats.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import 'dashboard_pages/account/account.dart';
@@ -33,7 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   static final List<Widget> _pages = [
     HomePage(),
-    MedicationTrackingScreen(),
+    MedicationStatsWidget(),
     AccountPage(),
   ];
 

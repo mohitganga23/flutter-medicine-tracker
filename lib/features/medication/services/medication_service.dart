@@ -9,6 +9,7 @@ import 'package:flutter_medicine_tracker/core/utils/ui_helper/dialog.dart';
 import 'package:flutter_medicine_tracker/features/medication/models/medication_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
 
 import '../../../core/utils/local_notification_service/local_notification_service.dart';
 import '../../../core/utils/navigation_helper.dart';
@@ -142,24 +143,132 @@ class MedicationService {
             // Step 4: Update Firestore document with modified dosages array
             await medicationDoc.reference.update({'dosages': dosages});
 
-            print("Medication status updated successfully!");
+            debugPrint("Medication status updated successfully!");
             return; // Exit once we update the correct dosage
           }
         }
       }
 
-      print("No matching medication found for notificationId: $notificationId");
+      debugPrint(
+          "No matching medication found for notificationId: $notificationId");
     } catch (e) {
-      print("Error updating medication tracking: $e");
+      debugPrint("Error updating medication tracking: $e");
     }
   }
 
-  Future<Map<String, int>> calculateMedicationStats() async {
+  Future<Map<String, dynamic>> calculateMedicationStats({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     try {
-      int takenCount = 0;
-      int missedCount = 0;
+      Map<String, Map<String, List<Map<String, dynamic>>>> dateWiseStats = {};
+      int totalTaken = 0;
+      int totalMissed = 0;
 
-      DateTime today = DateTime.now();
+      final DateTime now = DateTime.now();
+      final DateTime effectiveStartDate =
+          startDate ?? now.subtract(Duration(days: 6));
+      final DateTime effectiveEndDate = endDate ?? now;
+
+      QuerySnapshot medicationQuery = await _firestore
+          .collection('medications')
+          .doc(_auth.currentUser!.email.toString())
+          .collection('user_medications')
+          .get();
+
+      final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
+
+      for (var medicationDoc in medicationQuery.docs) {
+        final String medicationName = medicationDoc['medication_name'];
+        final List<dynamic> dosages = medicationDoc['dosages'] ?? [];
+        final DateTime createdAt =
+            (medicationDoc['created_at'] as Timestamp).toDate();
+
+        DateTime currentDate = effectiveStartDate;
+        while (currentDate.isBefore(effectiveEndDate) ||
+            currentDate.isAtSameMomentAs(effectiveEndDate)) {
+          if (currentDate.isAfter(createdAt) ||
+              currentDate.isAtSameMomentAs(createdAt)) {
+            String dateKey = dateFormatter.format(currentDate);
+
+            dateWiseStats[dateKey] ??= {};
+            dateWiseStats[dateKey]![medicationName] ??= [];
+
+            for (var dosage in dosages) {
+              String dosageTime = dosage['time'];
+              List<dynamic> trackedEntries = dosage['tracked'] ?? [];
+
+              var trackingEntry = trackedEntries.firstWhereOrNull((entry) {
+                DateTime entryDate = (entry['dateTime'] as Timestamp).toDate();
+                return dateFormatter.format(entryDate) == dateKey;
+              });
+
+              Map<String, dynamic> dosageStatus = {
+                'time': dosageTime,
+                'status': trackingEntry != null
+                    ? trackingEntry['status']
+                    : (currentDate.isAfter(createdAt) ? 'missed' : 'pending'),
+              };
+
+              if (trackingEntry != null) {
+                if (trackingEntry['status'] == 'taken') {
+                  totalTaken++;
+                } else if (trackingEntry['status'] == 'missed') {
+                  totalMissed++;
+                } else {
+                  totalMissed++;
+                }
+              } else if (currentDate.isAfter(createdAt)) {
+                totalMissed++;
+              }
+
+              dateWiseStats[dateKey]![medicationName]!.add(dosageStatus);
+            }
+          }
+          currentDate = currentDate.add(Duration(days: 1));
+        }
+      }
+
+      return {
+        'dateWiseStats': dateWiseStats,
+        'summary': {
+          'totalTaken': totalTaken,
+          'totalMissed': totalMissed,
+          'complianceRate': totalTaken + totalMissed > 0
+              ? (totalTaken / (totalTaken + totalMissed) * 100)
+                  .toStringAsFixed(1)
+              : '0.0'
+        },
+        'dateRange': {
+          'start': dateFormatter.format(effectiveStartDate),
+          'end': dateFormatter.format(effectiveEndDate),
+        }
+      };
+    } catch (e) {
+      debugPrint("Error calculating medication stats: $e");
+      return {
+        'dateWiseStats': {},
+        'summary': {'totalTaken': 0, 'totalMissed': 0, 'complianceRate': '0.0'},
+        'dateRange': {'start': '', 'end': ''},
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> calculateMedicationStats1({
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    try {
+      // Initialize result structure
+      Map<String, Map<String, Map<String, int>>> dateWiseStats = {};
+      int totalTaken = 0;
+      int totalMissed = 0;
+
+      // Set default date range if not provided (last 7 days)
+      final DateTime now = DateTime.now();
+      final DateTime effectiveStartDate =
+          startDate ?? now.subtract(Duration(days: 6));
+      final DateTime effectiveEndDate = endDate ?? now;
 
       // Fetch medications for user
       QuerySnapshot medicationQuery = await _firestore
@@ -168,46 +277,85 @@ class MedicationService {
           .collection('user_medications')
           .get();
 
+      // Format dates for comparison
+      final DateFormat dateFormatter = DateFormat('yyyy-MM-dd');
+
       for (var medicationDoc in medicationQuery.docs) {
-        List<dynamic> dosages = medicationDoc['dosages'] ?? [];
-        DateTime createdAt =
+        final String medicationName = medicationDoc['medication_name'];
+        final List<dynamic> dosages = medicationDoc['dosages'] ?? [];
+        final DateTime createdAt =
             (medicationDoc['created_at'] as Timestamp).toDate();
 
-        for (DateTime date = createdAt;
-            date.isBefore(today) || date.isAtSameMomentAs(today);
-            date = date.add(Duration(days: 1))) {
-          String dateKey = DateFormat('yyyy-MM-dd').format(date);
+        // Iterate through each day in the date range
+        DateTime currentDate = effectiveStartDate;
+        while (currentDate.isBefore(effectiveEndDate) ||
+            currentDate.isAtSameMomentAs(effectiveEndDate)) {
+          if (currentDate.isAfter(createdAt) ||
+              currentDate.isAtSameMomentAs(createdAt)) {
+            String dateKey = dateFormatter.format(currentDate);
 
-          for (var dosage in dosages) {
-            String time = dosage['time']; // e.g. "11:00 AM"
-            int notificationId = dosage['notification_id'];
+            // Initialize date entry if not exists
+            dateWiseStats[dateKey] ??= {};
+            dateWiseStats[dateKey]![medicationName] ??= {
+              'taken': 0,
+              'missed': 0
+            };
 
-            // Check if this dosage was tracked
-            bool isTaken = dosage['tracked']?.any((entry) =>
-                    (entry['dateTime'] as Timestamp).toDate().toLocal().day ==
-                        date.day &&
-                    (entry['dateTime'] as Timestamp).toDate().toLocal().month ==
-                        date.month &&
-                    (entry['dateTime'] as Timestamp).toDate().toLocal().year ==
-                        date.year) ??
-                false;
+            for (var dosage in dosages) {
+              String dosageTime = dosage['time'];
+              List<dynamic> trackedEntries = dosage['tracked'] ?? [];
 
-            if (isTaken) {
-              takenCount++;
-            } else {
-              missedCount++;
+              // Find tracking entry for this specific date
+              var trackingEntry = trackedEntries.firstWhereOrNull((entry) {
+                DateTime entryDate = (entry['dateTime'] as Timestamp).toDate();
+                return dateFormatter.format(entryDate) == dateKey;
+              });
+
+              if (trackingEntry != null) {
+                // Medication was tracked on this date
+                if (trackingEntry['status'] == 'taken') {
+                  dateWiseStats[dateKey]![medicationName]!['taken'] =
+                      dateWiseStats[dateKey]![medicationName]!['taken']! + 1;
+                  totalTaken++;
+                } else {
+                  dateWiseStats[dateKey]![medicationName]!['missed'] =
+                      dateWiseStats[dateKey]![medicationName]!['missed']! + 1;
+                  totalMissed++;
+                }
+              } else if (currentDate.isAfter(createdAt)) {
+                // Medication was scheduled but not tracked (missed)
+                dateWiseStats[dateKey]![medicationName]!['missed'] =
+                    dateWiseStats[dateKey]![medicationName]!['missed']! + 1;
+                totalMissed++;
+              }
             }
           }
+          currentDate = currentDate.add(Duration(days: 1));
         }
       }
 
       return {
-        "taken": takenCount,
-        "missed": missedCount,
+        'dateWiseStats': dateWiseStats,
+        'summary': {
+          'totalTaken': totalTaken,
+          'totalMissed': totalMissed,
+          'complianceRate': totalTaken + totalMissed > 0
+              ? (totalTaken / (totalTaken + totalMissed) * 100)
+                  .toStringAsFixed(1)
+              : '0.0'
+        },
+        'dateRange': {
+          'start': dateFormatter.format(effectiveStartDate),
+          'end': dateFormatter.format(effectiveEndDate),
+        }
       };
     } catch (e) {
-      print("Error calculating medication stats: $e");
-      return {};
+      debugPrint("Error calculating medication stats: $e");
+      return {
+        'dateWiseStats': {},
+        'summary': {'totalTaken': 0, 'totalMissed': 0, 'complianceRate': '0.0'},
+        'dateRange': {'start': '', 'end': ''},
+      };
     }
   }
 }
