@@ -31,49 +31,41 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_screenutil: ^5.9.3
-
-  # Icons
-  icons_plus: ^5.0.0
-  cupertino_icons: ^1.0.8
-
-  path_provider:
-
-  # Firebase
-  firebase_core: ^3.11.0
-  firebase_auth: ^5.4.2
-  firebase_storage: ^12.4.2
-  cloud_firestore: ^5.6.3
-  google_sign_in: ^6.2.2
-
-  #Provider
-  provider: ^6.1.2
-
-  #Fonts
-  google_fonts: ^6.2.1
-
-  # Notifications
-  flutter_local_notifications: ^18.0.1
-
+  # Core Utilities
+  intl: ^0.19.0
+  path_provider: ^2.1.5
   rxdart: ^0.28.0
 
-  # Timezones
-  timezone: ^0.10.0
-  flutter_timezone: ^4.1.0
+  # Firebase and Authentication
+  cloud_firestore: ^5.6.6
+  firebase_auth: ^5.5.2
+  firebase_core: ^3.13.0
+  firebase_storage: ^12.4.5
+  google_sign_in: ^6.3.0
 
-  intl:
+  # Notifications
+  flutter_local_notifications: ^19.0.0
 
-  group_button: ^5.3.4
+  # State Management
+  provider: ^6.1.4
 
-  image_picker: ^1.1.2
-
-  flutter_spinkit: ^5.2.1
-
+  # Storage
   flutter_secure_storage: ^9.2.4
 
-  fl_chart: ^0.66.0
+  # Timezones
+  flutter_timezone: ^4.1.0
+  timezone: ^0.10.0
 
+  # UI and Visuals
+  cupertino_icons: ^1.0.8
+  fl_chart: ^0.70.2
+  flutter_screenutil: ^5.9.3
+  flutter_spinkit: ^5.2.1
+  google_fonts: ^6.2.1
+  group_button: ^5.3.4
   horizontal_week_calendar: ^0.0.20
+  icons_plus: ^5.0.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3

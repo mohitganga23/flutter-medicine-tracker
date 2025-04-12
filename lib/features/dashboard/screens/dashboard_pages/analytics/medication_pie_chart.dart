@@ -200,7 +200,6 @@ class MedicationBarChart extends StatelessWidget {
           barTouchData: BarTouchData(
             enabled: false,
             touchTooltipData: BarTouchTooltipData(
-              tooltipBgColor: Colors.black.withOpacity(0.7),
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
                   "${data.keys.elementAt(group.x)}\n",
