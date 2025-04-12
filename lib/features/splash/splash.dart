@@ -45,8 +45,10 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     // Slide animation
-    _slideAnimation =
-        Tween<Offset>(begin: Offset(0, 1), end: Offset(0, 0)).animate(
+    _slideAnimation = Tween<Offset>(
+      begin: Offset(0, 1),
+      end: Offset(0, 0),
+    ).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
 

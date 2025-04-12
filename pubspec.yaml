@@ -59,6 +59,7 @@ dependencies:
 
   # Timezones
   timezone: ^0.10.0
+  flutter_timezone: ^4.1.0
 
   intl:
 
