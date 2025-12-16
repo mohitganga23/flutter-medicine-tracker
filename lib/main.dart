@@ -49,8 +49,8 @@ class TimeZoneConfig {
     if (!_isInitialized) {
       tz.initializeTimeZones();
       try {
-        String deviceTimeZone = await FlutterTimezone.getLocalTimezone();
-        tz.setLocalLocation(tz.getLocation(deviceTimeZone));
+        TimezoneInfo deviceTimeZone = await FlutterTimezone.getLocalTimezone();
+        tz.setLocalLocation(tz.getLocation(deviceTimeZone.identifier));
       } catch (e) {
         debugPrint('Timezone initialization failed, using Asia/Kolkata: $e');
         tz.setLocalLocation(tz.getLocation('Asia/Kolkata'));
@@ -138,7 +138,7 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Medicine',
           debugShowCheckedModeBanner: false,
           navigatorKey: navKey,
-          theme: AppThemes.lightTheme,
+          theme: AppThemes.darkTheme,
           darkTheme: AppThemes.darkTheme,
           themeMode: ThemeMode.system,
           initialRoute: AppRoutes.splash,
